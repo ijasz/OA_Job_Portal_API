@@ -2,7 +2,7 @@ const { log } = require("console");
 const express = require("express");
 const app = express();
 
-app.get("/", (req, res) => {
+app.get("/app", (req, res) => {
   res.send("hello");
 });
 
