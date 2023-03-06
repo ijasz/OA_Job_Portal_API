@@ -6,7 +6,7 @@ const schema = new mongoose.Schema({
   organization: { type: String, required: true },
   recruiterRole: { type: String, required: true },
   interestedIn: { type: Array, required: true },
-  email: { type: String, required: true, index: true, unique: true },
+  email: { type: String, required: true },
   message: { type: String, required: false },
 });
 

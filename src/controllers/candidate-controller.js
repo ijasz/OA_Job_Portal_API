@@ -23,16 +23,42 @@ const getCandidateById = (req, res) => {
   });
 };
 
-const createCandidate = (req, res) => {
-  const candidate = new Candidate(req.body);
-  console.log(req.body, "trigged");
-  candidate.save((error) => {
-    if (error) {
-      res.status(400).send(error);
-    } else {
-      res.status(201).send(candidate);
-    }
+const createManyCandidate = async (req, res) => {
+  const data = req.body.map((data) => {
+    return { ...data, createdAt: Date.now() };
   });
+
+  Candidate.insertMany(data)
+    .then((docs) => {
+      console.log("Books inserted:", docs);
+      res.send(docs);
+    })
+    .catch((err) => {
+      console.error("Error inserting books:", err);
+    });
+};
+
+const createCandidate = async (req, res) => {
+  const phoneNumber = await Candidate.findOne({
+    phoneNumber: req.body.phoneNumber,
+  });
+
+  console.log(phoneNumber, "phonenumber---------------");
+
+  if (phoneNumber == null) {
+    const candidate = new Candidate({ ...req.body, createdAt: Date.now() });
+    candidate.save((error) => {
+      if (error) {
+        console.log(error, "-----------eroor");
+        res.status(400).send(error);
+      } else {
+        console.log(req.body, "candidate created");
+        res.status(201).send(candidate);
+      }
+    });
+  } else {
+    res.send("already exists");
+  }
 };
 
 const deleteCandidateById = (req, res) => {

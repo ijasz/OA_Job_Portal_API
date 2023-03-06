@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const Candidate = require("../models/candidate-model");
 const {
   createCandidate,
   getAllCandidates,
@@ -8,22 +7,7 @@ const {
   getCandidateById,
 } = require("../controllers/candidate-controller");
 
-const checkPhoneNumber = async (req, res, next) => {
-  console.log(req.body.phoneNumber, "req");
-  const phoneNumber = await Candidate.findOne({
-    phoneNumber: req.body.phoneNumber,
-  });
-
-  if (phoneNumber == null) {
-    next();
-  } else {
-    res.send("already exists");
-  }
-
-  return;
-};
-
-router.post("/create", checkPhoneNumber, createCandidate);
+router.post("/create", createCandidate);
 
 router.get("/get", getAllCandidates);
 

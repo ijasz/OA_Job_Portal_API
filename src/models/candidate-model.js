@@ -11,6 +11,7 @@ const schema = new mongoose.Schema({
   workStatus: { type: String, required: true },
   skills: { type: Array, required: false },
   resume: { type: String, required: false },
+  createdAt: { type: Date, required: true },
 });
 
 // Create the model

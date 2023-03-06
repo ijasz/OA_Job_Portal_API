@@ -23,16 +23,28 @@ const getRecruiterById = (req, res) => {
   });
 };
 
-const createRecruiter = (req, res) => {
-  const recruiter = new Recruiter(req.body);
-  console.log(req.body, "trigged");
-  recruiter.save((error) => {
-    if (error) {
-      res.status(400).send(error);
-    } else {
-      res.status(201).send(recruiter);
-    }
+const createRecruiter = async (req, res) => {
+  console.log(req.body, "body-------------");
+  const email = await Recruiter.findOne({
+    email: req.body.email,
   });
+
+  // console.log(email, "email---------------");
+
+  if (email == null) {
+    const recruiter = new Recruiter(req.body);
+    recruiter.save((error, data) => {
+      if (error) {
+        console.log(error, "-----------error");
+        res.status(400).send(error);
+      } else {
+        console.log(data, "recruiter created");
+        res.status(201).send(recruiter);
+      }
+    });
+  } else {
+    res.send("already exists");
+  }
 };
 
 const deleteRecruiterById = (req, res) => {
